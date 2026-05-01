@@ -93,7 +93,7 @@ jobs:
         run: npm ci
       - working-directory: dashboard
         run: npm run build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: dashboard-dist
           path: dashboard/dist
