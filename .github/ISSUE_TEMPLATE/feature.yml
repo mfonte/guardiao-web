@@ -1,0 +1,39 @@
+name: ✨ Feature
+description: Nova feature no dashboard
+title: "[FEAT] "
+labels: ["enhancement", "triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema / motivação
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposta
+    validations:
+      required: true
+
+  - type: dropdown
+    id: role
+    attributes:
+      label: Para qual role?
+      multiple: true
+      options:
+        - platform_admin
+        - company_admin
+        - member
+        - viewer
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: contracts
+    attributes:
+      label: Impacta contratos compartilhados?
+      options:
+        - label: "Sim — abrir issue tipo `contracts-change` no meta-repo primeiro"
+        - label: "Não, apenas frontend"

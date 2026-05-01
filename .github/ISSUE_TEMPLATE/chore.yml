@@ -1,0 +1,15 @@
+name: 🧹 Chore
+description: Refactor, deps, tooling
+title: "[CHORE] "
+labels: ["chore", "triage"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: O que fazer?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Por quê?

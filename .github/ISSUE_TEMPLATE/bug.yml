@@ -1,0 +1,66 @@
+name: 🐛 Bug
+description: Bug no dashboard web
+title: "[BUG] "
+labels: ["bug", "triage"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: O que aconteceu?
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Passos para reproduzir
+      placeholder: |
+        1. Abrir https://guardiaoiot.com.br/dashboard
+        2. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento esperado
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Navegador / versão
+      placeholder: "Chrome 130, Firefox 132, Safari 18..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: viewport
+    attributes:
+      label: Viewport
+      options:
+        - Desktop (>1024px)
+        - Tablet (768-1024px)
+        - Mobile (<768px)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: role
+    attributes:
+      label: Role do usuário
+      options:
+        - platform_admin
+        - company_admin
+        - member
+        - viewer
+        - Não logado
+    validations:
+      required: true
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Erro no console (se houver)
+      render: javascript

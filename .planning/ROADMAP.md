@@ -11,6 +11,7 @@
 **Cobre:** R1.1–R1.5, R2.1–R2.10, R3.1–R3.7, R11.1.
 
 **Entregáveis:**
+
 - `dashboard/` com Vite + React + Tailwind v4 + lucide-react + recharts + firebase instalados.
 - `src/core/firebase.js` configurado para projeto `iotemp-sensor` lendo `import.meta.env.VITE_FIREBASE_*`.
 - `dashboard/.env.example` versionado; `dashboard/.env` no gitignore.
@@ -23,6 +24,7 @@
 - `.gitignore` raiz atualizado para ignorar `dashboard/node_modules`, `dashboard/dist`, `dashboard/.env`.
 
 **UAT (validação manual mobile + desktop):**
+
 - Login com credencial real do `iotemp-sensor` funciona.
 - Reload mantém sessão.
 - Logout volta para login.
@@ -41,6 +43,7 @@
 **Cobre:** R4, R5, R6, R9.2 (toggle global push).
 
 **Entregáveis:**
+
 - Hook `useDevices()` que combina `UsersData/{uid}/devices` + `orgs/{orgId}/devices`, expondo cada item com sua origem (`source: 'user' | 'org'`) para escolher o path correto na hora de escrever.
 - Página `Home` (visão geral) portada do protótipo, alimentada pelo hook real.
 - Página `DevicesPage` com lista, busca, drill-down em mobile.
@@ -52,6 +55,7 @@
 - Tratamento de `permission_denied` (mostra mensagem amigável, não quebra a UI).
 
 **UAT:**
+
 - KPIs batem com a contagem real do DB.
 - Clicar em alerta na home abre o device correto.
 - Edição de threshold persiste e reflete imediatamente em todas as telas.
@@ -70,6 +74,7 @@
 **Cobre:** R7, R8, R9 (todo).
 
 **Entregáveis:**
+
 - Página `OrgPage`: ler/editar `orgs/{orgId}/metadata.name`, mostrar contadores (membros, devices).
 - Página `MembersPage`:
   - Lista de `orgs/{orgId}/members/` com role e ações.
@@ -84,6 +89,7 @@
   - Toggle global de push (mesma fonte do header).
 
 **UAT:**
+
 - Admin convida membro real, recebe email (Cloud Function dispara).
 - Convite pendente aparece e pode ser cancelado.
 - Alterar role atualiza visibilidade de menu pro membro afetado em tempo real.
@@ -102,6 +108,7 @@
 **Cobre:** R10, R11 (auditoria final).
 
 **Entregáveis:**
+
 - `firebase.json` na raiz do `guardiao-web` com dois targets (`landing` e `dashboard`):
   - `landing`: serve raiz; ignora `dashboard/**`, `.planning/**`, `node_modules/**`.
   - `dashboard`: public `dashboard/dist`; rewrite `/**` → `/index.html`.
@@ -117,6 +124,7 @@
 - `CHANGELOG.md` atualizado com entrada `[v1.0.0]`.
 
 **UAT:**
+
 - `https://guardiaoiot.com.br/dashboard` carrega a SPA, sem 404 em refresh de rotas internas.
 - `https://guardiaoiot.com.br/` continua mostrando a landing original.
 - Login real funciona em produção.

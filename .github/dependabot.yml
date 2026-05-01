@@ -1,0 +1,56 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "github-actions"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      actions-minor-patch:
+        update-types: ["minor", "patch"]
+
+  # NPM dependencies do dashboard (sera ativado quando dashboard/ existir)
+  - package-ecosystem: "npm"
+    directory: "/dashboard"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:30"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 10
+    labels: ["dependencies", "npm"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      react:
+        patterns: ["react", "react-dom", "@types/react", "@types/react-dom"]
+      vite:
+        patterns: ["vite", "@vitejs/*"]
+      firebase:
+        patterns: ["firebase", "firebase-*"]
+      tailwind:
+        patterns: ["tailwindcss", "@tailwindcss/*"]
+      lint-format:
+        patterns: ["eslint*", "prettier*", "@typescript-eslint/*"]
+      test:
+        patterns: ["vitest", "@vitest/*", "@testing-library/*", "playwright*"]
+      minor-patch:
+        update-types: ["minor", "patch"]
+    ignore:
+      # Major updates de React/Vite/Firebase tratados manual
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "vite"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "firebase"
+        update-types: ["version-update:semver-major"]

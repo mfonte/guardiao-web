@@ -1,0 +1,64 @@
+name: Firebase Hosting — Production
+
+# Deploy production em push pra main, COM aprovacao manual via GitHub Environment.
+# Configure o environment "production" em Settings > Environments com:
+#   - Required reviewers: voce
+#   - Wait timer: opcional
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "dashboard/**"
+      - "index.html"
+      - "firebase.json"
+      - ".firebaserc"
+      - ".github/workflows/firebase-hosting-prod.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: hosting-prod
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://www.guardiaoiot.com.br
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect dashboard
+        id: detect
+        run: |
+          if [ -f "dashboard/package.json" ]; then
+            echo "build=true" >> $GITHUB_OUTPUT
+          else
+            echo "build=false" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.detect.outputs.build == 'true'
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: dashboard/package-lock.json
+
+      - name: Build dashboard
+        if: steps.detect.outputs.build == 'true'
+        working-directory: dashboard
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy to live channel
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: iotemp-sensor
+          channelId: live

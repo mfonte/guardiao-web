@@ -61,7 +61,18 @@
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-8px); }
     }
-    .float { animation: float 4s ease-in-out infinite; }
+    .float { animation: float 4s ease-in-out infinite; pointer-events: none; }
+
+    /* Hardening: prevent decorative layers from blocking form focus */
+    #contato { isolation: isolate; z-index: 60; }
+    #contato form,
+    #contato label,
+    #contato input,
+    #contato button {
+      position: relative;
+      z-index: 61;
+      pointer-events: auto;
+    }
   </style>
 </head>
 <body class="gradient-bg min-h-screen text-white antialiased">
@@ -111,7 +122,7 @@
 
         <!-- Subheading -->
         <p class="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
-          O Guardião IoT monitora temperatura, umidade e outros parâmetros críticos em tempo real, 
+          O Guardião IoT monitora temperatura, umidade e outros parâmetros críticos em tempo real,
           com alertas inteligentes direto no seu celular.
         </p>
 
@@ -119,7 +130,7 @@
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
             href="#contato"
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-teal-600 hover:bg-teal-500 font-semibold text-base transition-colors duration-200 shadow-lg shadow-teal-900/40"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-teal-600 hover:bg-teal-500 font-semibold text-base transition-colors duration-200 shadow-lg shadow-teal-900/40 pointer-events-auto"
           >
             Solicitar acesso
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
@@ -135,17 +146,19 @@
         </div>
 
         <!-- Stats -->
-        <div class="mt-16 grid grid-cols-3 gap-4 max-w-lg mx-auto">
-          <div class="card-glow rounded-xl bg-white/5 p-4">
+        <div class="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+          <div class="card-glow rounded-xl bg-white/5 p-5 min-h-[96px] flex flex-col items-center justify-center text-center">
             <div class="text-2xl font-bold text-teal-400">24/7</div>
             <div class="text-xs text-white/50 mt-1">Monitoramento</div>
           </div>
-          <div class="card-glow rounded-xl bg-white/5 p-4">
+          <div class="card-glow rounded-xl bg-white/5 p-5 min-h-[96px] flex flex-col items-center justify-center text-center">
             <div class="text-2xl font-bold text-teal-400">&lt;30s</div>
             <div class="text-xs text-white/50 mt-1">Latência de alerta</div>
           </div>
-          <div class="card-glow rounded-xl bg-white/5 p-4">
-            <div class="text-2xl font-bold text-teal-400">iOS&amp;Android</div>
+          <div class="card-glow rounded-xl bg-white/5 p-5 min-h-[96px] flex flex-col items-center justify-center text-center">
+            <div class="text-xl sm:text-2xl font-bold text-teal-400 leading-tight whitespace-nowrap">
+              iOS &amp; Android
+            </div>
             <div class="text-xs text-white/50 mt-1">App nativo</div>
           </div>
         </div>
@@ -228,42 +241,58 @@
     <!-- CTA / Contato -->
     <section id="contato" class="py-24 px-6">
       <div class="max-w-xl mx-auto text-center">
-        <div class="card-glow rounded-3xl bg-white/5 border border-white/10 p-10">
+        <div class="card-glow rounded-3xl bg-white/5 border border-white/10 p-10 relative z-20">
           <h2 class="text-3xl font-bold mb-3">Pronto para começar?</h2>
           <p class="text-white/50 mb-8">Deixe seu email e entraremos em contato para configurar seu primeiro sensor.</p>
 
           <form
+            id="contact-form"
             action="https://formspree.io/f/placeholder"
             method="POST"
-            class="flex flex-col gap-4"
+            class="flex flex-col gap-4 relative z-20"
             aria-label="Formulário de contato"
           >
-            <input
-              type="text"
-              name="name"
-              placeholder="Seu nome"
-              required
-              class="w-full px-4 py-3 rounded-xl bg-white/8 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors"
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="seu@email.com.br"
-              required
-              class="w-full px-4 py-3 rounded-xl bg-white/8 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors"
-            />
-            <input
-              type="text"
-              name="company"
-              placeholder="Empresa (opcional)"
-              class="w-full px-4 py-3 rounded-xl bg-white/8 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors"
-            />
+            <div class="text-left">
+              <label for="contact-name" class="block text-sm font-medium text-white/80 mb-2">Nome</label>
+              <input
+                id="contact-name"
+                type="text"
+                name="name"
+                placeholder="Seu nome"
+                required
+                class="w-full px-4 py-3 rounded-xl bg-white border border-white/30 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors pointer-events-auto"
+              />
+            </div>
+            <div class="text-left">
+              <label for="contact-email" class="block text-sm font-medium text-white/80 mb-2">Email</label>
+              <input
+                id="contact-email"
+                type="email"
+                name="email"
+                placeholder="seu@email.com.br"
+                required
+                class="w-full px-4 py-3 rounded-xl bg-white border border-white/30 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors pointer-events-auto"
+              />
+            </div>
+            <div class="text-left">
+              <label for="contact-company" class="block text-sm font-medium text-white/80 mb-2">Empresa (opcional)</label>
+              <input
+                id="contact-company"
+                type="text"
+                name="company"
+                placeholder="Nome da empresa"
+                class="w-full px-4 py-3 rounded-xl bg-white border border-white/30 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors pointer-events-auto"
+              />
+            </div>
             <button
               type="submit"
-              class="w-full py-4 rounded-xl bg-teal-600 hover:bg-teal-500 font-semibold text-base transition-colors duration-200 shadow-lg shadow-teal-900/40"
+              class="w-full py-4 rounded-xl bg-teal-600 hover:bg-teal-500 font-semibold text-base transition-colors duration-200 shadow-lg shadow-teal-900/40 pointer-events-auto"
             >
               Solicitar acesso →
             </button>
+            <p id="contact-fallback-hint" class="text-xs text-white/50 mt-2 text-left hidden">
+              Endpoint de formulário em configuração — vamos abrir seu app de e-mail para envio.
+            </p>
           </form>
         </div>
       </div>
@@ -275,5 +304,74 @@
     <p>© 2026 Guardião IoT — guardiaoiot.com.br</p>
   </footer>
 
+  <script>
+    (() => {
+      const form = document.getElementById('contact-form');
+      const hint = document.getElementById('contact-fallback-hint');
+      if (!form) return;
+
+      const endpoint = 'https://us-central1-iotemp-sensor.cloudfunctions.net/submitLandingLead';
+      const submitButton = form.querySelector('button[type="submit"]');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const name = (form.querySelector('[name="name"]')?.value || '').trim();
+        const email = (form.querySelector('[name="email"]')?.value || '').trim();
+        const company = (form.querySelector('[name="company"]')?.value || '').trim();
+
+        if (!name || !email) {
+          if (hint) {
+            hint.textContent = 'Preencha pelo menos nome e email.';
+            hint.className = 'text-xs text-amber-300 mt-2 text-left';
+          }
+          return;
+        }
+
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Enviando...';
+        }
+
+        try {
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, company }),
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+
+          if (hint) {
+            hint.textContent = 'Solicitação enviada com sucesso! Em breve entraremos em contato.';
+            hint.className = 'text-xs text-emerald-300 mt-2 text-left';
+          }
+          form.reset();
+        } catch (error) {
+          if (hint) {
+            hint.textContent = 'Envio direto indisponível. Vamos abrir seu app de e-mail como alternativa.';
+            hint.className = 'text-xs text-white/70 mt-2 text-left';
+          }
+
+          const subject = encodeURIComponent('Solicitação de acesso — Landing Guardião IoT');
+          const body = encodeURIComponent(
+            `Nome: ${name || '-'}
+Email: ${email || '-'}
+Empresa: ${company || '-'}
+
+Origem: guardiaoiot.com.br`
+          );
+          window.location.href = `mailto:contato@guardiaoiot.com.br?subject=${subject}&body=${body}`;
+        } finally {
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Solicitar acesso →';
+          }
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

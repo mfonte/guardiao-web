@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detect:
+    name: Detect dashboard project
+    runs-on: ubuntu-latest
+    outputs:
+      has_dashboard: ${{ steps.check.outputs.has_dashboard }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: |
+          if [ -f "dashboard/package.json" ]; then
+            echo "has_dashboard=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_dashboard=false" >> $GITHUB_OUTPUT
+            echo "::notice::dashboard/package.json nao existe ainda. Phase 1 ainda nao iniciou. CI sera ativado quando o projeto for scaffoldado."
+          fi
+
+  lint:
+    name: Lint
+    needs: detect
+    if: needs.detect.outputs.has_dashboard == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: dashboard/package-lock.json
+      - working-directory: dashboard
+        run: npm ci
+      - working-directory: dashboard
+        run: npm run lint
+
+  typecheck:
+    name: Typecheck
+    needs: detect
+    if: needs.detect.outputs.has_dashboard == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: dashboard/package-lock.json
+      - working-directory: dashboard
+        run: npm ci
+      - working-directory: dashboard
+        run: npm run typecheck --if-present
+
+  test:
+    name: Test
+    needs: detect
+    if: needs.detect.outputs.has_dashboard == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: dashboard/package-lock.json
+      - working-directory: dashboard
+        run: npm ci
+      - working-directory: dashboard
+        run: npm test --if-present -- --run
+
+  build:
+    name: Build
+    needs: [lint, typecheck, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: dashboard/package-lock.json
+      - working-directory: dashboard
+        run: npm ci
+      - working-directory: dashboard
+        run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-dist
+          path: dashboard/dist
+          retention-days: 7

@@ -28,17 +28,17 @@ Este repositório (`guardiao-web`) abriga:
 
 ## Stack
 
-| Camada | Escolha | Por quê |
-|---|---|---|
-| Build | **Vite** | Bundle leve, HMR rápido, output estático que casa com Firebase Hosting |
-| UI | **React 18 + JSX** | Mesma stack do protótipo aprovado; TypeScript fica para milestone futura |
-| Estilo | **Tailwind v4** | Utility-first, dark mode trivial, alinha com Material Design 3 sem framework pesado |
-| Ícones | **lucide-react** | Já usado no protótipo |
-| Gráficos | **recharts** | Mais leve que alternativas, suficiente pro escopo (linha + threshold) |
-| Auth | **Firebase Auth** (email/senha) | Já habilitado no projeto Firebase via app mobile |
-| Dados | **Firebase Realtime Database** | Mesmo DB do app mobile (`iotemp-sensor-default-rtdb`) |
-| Push | **FCM web** (Entrega 3+) | Cloud Functions de push já existem no `guardiao-app/functions` |
-| Hospedagem | **Firebase Hosting** | Mesmo projeto que serve a landing; dois targets (`landing`, `dashboard`) |
+| Camada     | Escolha                         | Por quê                                                                             |
+| ---------- | ------------------------------- | ----------------------------------------------------------------------------------- |
+| Build      | **Vite**                        | Bundle leve, HMR rápido, output estático que casa com Firebase Hosting              |
+| UI         | **React 18 + JSX**              | Mesma stack do protótipo aprovado; TypeScript fica para milestone futura            |
+| Estilo     | **Tailwind v4**                 | Utility-first, dark mode trivial, alinha com Material Design 3 sem framework pesado |
+| Ícones     | **lucide-react**                | Já usado no protótipo                                                               |
+| Gráficos   | **recharts**                    | Mais leve que alternativas, suficiente pro escopo (linha + threshold)               |
+| Auth       | **Firebase Auth** (email/senha) | Já habilitado no projeto Firebase via app mobile                                    |
+| Dados      | **Firebase Realtime Database**  | Mesmo DB do app mobile (`iotemp-sensor-default-rtdb`)                               |
+| Push       | **FCM web** (Entrega 3+)        | Cloud Functions de push já existem no `guardiao-app/functions`                      |
+| Hospedagem | **Firebase Hosting**            | Mesmo projeto que serve a landing; dois targets (`landing`, `dashboard`)            |
 
 > **Decisão registrada:** o `CLAUDE.md` do repo lista TypeScript como preferido. Optamos por **JSX neste milestone** para preservar o protótipo já validado e acelerar v1; conversão para TS fica como milestone explícita futura.
 
@@ -74,6 +74,7 @@ guardiao-web/
 Tudo abaixo já existe no repo `../guardiao-app` — o dashboard apenas consome.
 
 ### Projeto Firebase
+
 - **Project ID:** `iotemp-sensor`
 - **Auth domain:** `iotemp-sensor.firebaseapp.com`
 - **Database URL:** `https://iotemp-sensor-default-rtdb.firebaseio.com`
@@ -101,11 +102,13 @@ orgs/{orgId}/
 ```
 
 ### Roles
+
 - `platform_admin` → vê tudo (raiz `orgs`). Não escopo desta v1.
 - `company_admin` → CRUD em `orgs/{orgId}/metadata|members|invites|devices`.
 - `member` / `viewer` → leitura nos devices da org da qual é membro.
 
 ### Cloud Functions já implementadas (`guardiao-app/functions`)
+
 - Push via FCM em mudança de threshold (respeita `alertPreferences/pushEnabled` global e `notifications/enabled` per-device).
 - Convite por email via **Resend** (escreve em `orgs/{orgId}/invites/`).
 

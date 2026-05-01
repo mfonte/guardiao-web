@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🌐 Plataforma (cross-repo)
+    url: https://github.com/mfonte/guardiao-project/issues/new/choose
+    about: Para issues que envolvem 2+ subprojetos ou contratos compartilhados.
+  - name: 🔐 Reportar vulnerabilidade
+    url: https://github.com/mfonte/guardiao-web/security/advisories/new
+    about: Use o canal privado de security advisories.
