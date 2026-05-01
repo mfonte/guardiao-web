@@ -69,6 +69,8 @@ guardiao-web/
 
 ## Backend de Referência (já existente)
 
+> **Schema canônico, roles, paleta e contratos vivem em [`../SHARED-CONTRACTS.md`](../../SHARED-CONTRACTS.md).** Consulte sempre esse doc antes de mudar paths do Realtime DB ou políticas de acesso. O resumo abaixo serve só como _quick reference_ — em caso de divergência, vence o `SHARED-CONTRACTS.md`.
+
 Tudo abaixo já existe no repo `../guardiao-app` — o dashboard apenas consome.
 
 ### Projeto Firebase
