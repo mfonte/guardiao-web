@@ -16,11 +16,14 @@ Dashboard web da plataforma **Guardião IoT**. Interface para monitoramento, ges
 
 ## Pré-requisitos
 
-> Stack a ser definida. Atualizar esta seção após decisão.
-
 - Node.js 20+
-- npm ou yarn
-- Conta Firebase configurada
+- npm 10+
+- Conta Firebase com acesso aos projetos `guardiao-iot-dev`, `guardiao-iot-uat` e `iotemp-sensor`
+
+## Stack
+
+React 18 + TypeScript 5 + Vite 6, MUI v6, Firebase, TanStack Query, Zustand, React Hook Form + Zod.
+Detalhes em [CLAUDE.md](./CLAUDE.md).
 
 ---
 
@@ -28,7 +31,7 @@ Dashboard web da plataforma **Guardião IoT**. Interface para monitoramento, ges
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/guardiao-web.git
+git clone https://github.com/mfonte/guardiao-web.git
 cd guardiao-web
 ```
 
@@ -37,42 +40,32 @@ cd guardiao-web
 npm install
 ```
 
-3. Configure as variáveis de ambiente:
+3. Preencha as credenciais Firebase nos `.env.{development,uat,production}`:
 ```bash
-cp .env.example .env
-# Edite .env com as credenciais do Firebase
+firebase apps:sdkconfig WEB --project guardiao-iot-dev
+# Cole apiKey, appId, messagingSenderId em .env.development
 ```
 
 4. Execute em modo de desenvolvimento:
 ```bash
-npm run dev
+npm run dev          # → guardiao-iot-dev
+npm run dev:uat      # → guardiao-iot-uat
 ```
-
----
-
-## Variáveis de Ambiente
-
-```env
-VITE_FIREBASE_API_KEY=
-VITE_FIREBASE_AUTH_DOMAIN=
-VITE_FIREBASE_DATABASE_URL=
-VITE_FIREBASE_PROJECT_ID=
-VITE_FIREBASE_STORAGE_BUCKET=
-VITE_FIREBASE_MESSAGING_SENDER_ID=
-VITE_FIREBASE_APP_ID=
-```
-
----
 
 ## Scripts
 
-```bash
-npm run dev        # Desenvolvimento
-npm run build      # Build de produção
-npm run preview    # Preview do build
-npm run lint       # Lint
-npm run test       # Testes
-```
+| Comando | O que faz |
+|---|---|
+| `npm run dev` | Dev server (mode=development → guardiao-iot-dev) |
+| `npm run dev:uat` | Dev server (mode=uat → guardiao-iot-uat) |
+| `npm run build` | Build produção (→ iotemp-sensor) |
+| `npm run build:uat` | Build UAT (→ guardiao-iot-uat) |
+| `npm run build:dev` | Build dev (→ guardiao-iot-dev) |
+| `npm run preview` | Serve `dist/` localmente |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | tsc --noEmit |
+| `npm test` | Vitest |
+| `npm run format` | Prettier |
 
 ---
 

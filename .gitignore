@@ -40,6 +40,7 @@ yarn-error.log*
 .eslintcache
 .stylelintcache
 *.tsbuildinfo
+coverage/
 
 # Claude Code
 .claude/
