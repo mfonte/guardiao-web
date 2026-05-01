@@ -41,9 +41,17 @@ yarn-error.log*
 .stylelintcache
 *.tsbuildinfo
 
-# GSD e SDD
-.planning/
+# Claude Code
+.claude/
+
+# SDD
 .kiro/
+
+# GSD: planning é versionado (config: commit_docs=true).
+# Ignorar apenas artefatos efêmeros dentro do .planning/.
+.planning/state/checkpoints/
+.planning/state/locks/
+.planning/tmp/
 
 # Testes / cobertura
 coverage/
